@@ -124,7 +124,7 @@ class Node{
 		for (int key : map.keySet()) {
 			for (int i = 0; i < map.get(key).length; i++) {
 				
-				if(Pattern.matches("[0-9]{1}", map.get(key)[i])) {
+				if(Pattern.matches("[1-9]{1}", map.get(key)[i])) {
 					//int[] balle = {key, i, value};
 					//balles.add(balle);
 					Balle balle = new Balle();
@@ -164,13 +164,13 @@ class Node{
 					
 					boolean block = false;
 					for(int i = b.x + 1 ; i < b.x + b.mov ; i++) {
-						System.err.println("TEST ON "+pattern.get(b.y)[b.x + 1]);
-						if (Pattern.matches("(<|>|v|\\^|h|[0-9]{1})", pattern.get(b.y)[b.x + 1])) {
+						System.err.println("TEST ON "+pattern.get(b.y)[i]);
+						if (Pattern.matches("(<|>|v|\\^|H|[0-9])", pattern.get(b.y)[i])) {
 							
 							block = true;
 						}
 					}
-					System.err.println("block = "+block);
+					System.err.println("block = "+block+" b = "+b.x+" "+b.y);
 					
 					
 					if(block == false) {
@@ -209,14 +209,14 @@ class Node{
 				else {
 					
 					boolean block = false;
-					for(int i = b.x - b.mov +1 ; i < b.x ; i++) {
-						System.err.println("TEST ON "+pattern.get(b.y)[b.x - b.mov +1]);
-						if (Pattern.matches("(<|>|v|\\^|h|[0-9]{1})", pattern.get(b.y)[b.x - b.mov + 1])) {
+					for(int i = b.x - 1 ; i > b.x - b.mov  ; i--) {
+						System.err.println("TEST ON "+pattern.get(b.y)[i]);
+						if (Pattern.matches("(<|>|v|\\^|H|[0-9]{1})", pattern.get(b.y)[i])) {
 							
 							block = true;
 						}
 					}
-					System.err.println("block = "+block);
+					System.err.println("block = "+block+" b = "+b.x+" "+b.y);
 					
 					if(block == false) {
 						
@@ -258,12 +258,12 @@ class Node{
 					boolean block = false;
 					for(int i = b.y + 1 ; i < b.y + b.mov ; i++) {
 						System.err.println("TEST ON "+pattern.get(i)[b.x]);
-						if (Pattern.matches("(<|>|v|\\^|h|[0-9]{1})", pattern.get(i)[b.x])) {
+						if (Pattern.matches("(<|>|v|\\^|H|[0-9]{1})", pattern.get(i)[b.x])) {
 							
 							block = true;
 						}
 					}
-					System.err.println("block = "+block);
+					System.err.println("block = "+block+" b = "+b.x+" "+b.y);
 					
 					if(block == false) {
 						if(map.get(b.y + b.mov)[b.x].equals("H") || map.get(b.y + b.mov)[b.x].equals(".")) {
@@ -300,9 +300,13 @@ class Node{
 				else {
 					
 					boolean block = false;
-					for (int i = b.y -1 ; i > b.y  ; i--) {
-						block = Pattern.matches("(<|>|v|^|h|[0-9]{1})", pattern.get(i)[b.x]);
+					for (int i = b.y -1 ; i > b.y - b.mov  ; i--) {
+						System.err.println("TEST ON "+pattern.get(i)[b.x]);
+						if(Pattern.matches("(<|>|v|\\^|H|[0-9])", pattern.get(i)[b.x])) {
+							block = true;
+						}
 					}
+					System.err.println("block = "+block+" b = "+b.x+" "+b.y);
 					
 					if(block == false) {
 						
@@ -379,6 +383,7 @@ class Node{
 			for(int i = pos.y - pos.mov ; i < pos.y ; i++) {
 				pattern.get(i)[pos.x] = "v";
 			}
+			pattern.get(pos.y)[pos.x] = String.valueOf(pos.mov - 1);
 		}
 		else if(pos.dir == 'N') {
 			map.get(pos.y + pos.mov)[pos.x] = ".";
@@ -404,6 +409,13 @@ class Node{
 		}
 		else {
 			map.get(pos.y)[pos.x] = String.valueOf(pos.mov - 1);
+		}
+		
+		if((pos.mov - 1) == 0) {
+			pattern.get(pos.y)[pos.x] = String.valueOf(0);
+		}
+		else {
+			pattern.get(pos.y)[pos.x] = String.valueOf(pos.mov - 1);
 		}
 		
 			
@@ -523,12 +535,12 @@ class Finder{
 				node.printBalles();
 				node.printossibilites();
 				
-					//new Scanner(System.in).next();
+					new Scanner(System.in).next();
 				parcourNodes(node);
 			}
 			else {
 				System.err.println("###### RETOUR ########");
-					//new Scanner(System.in).next();
+					new Scanner(System.in).next();
 				System.err.println(node.parent);
 				n.parent.printMap();
 				n.parent.printBalles();
@@ -594,7 +606,29 @@ class Solution {
 		
 		Finder.parcourNodes(n);
        
-        
+        /*
+        .XXX.5X.
+		X.4.X..X
+		X4..X3.X
+		X...X.X.
+		.X.X.H.X
+		X.HX...X
+		X..X.H.X
+		.XH.XXX.
+		*/
+		
+		/* test 7
+		4H5..... 
+		......3. 
+		......H. 
+		.....H3. 
+		........ 
+		....HH.. 
+		.43..... 
+		..H3H... 
+		*/
+ 
+         
       
     }
 }
