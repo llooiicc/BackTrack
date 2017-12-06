@@ -426,7 +426,17 @@ class Node{
 		}
 	}
 	
-	
+	public void clearPattern() {
+		
+		for (int key : pattern.keySet()) {
+			for (int i = 0 ; i < STATICS.maxX ; i++) {
+				
+				if(Pattern.matches("(X|H)", pattern.get(key)[i])) {
+					pattern.get(key)[i] = ".";
+				}
+			}
+		}
+	}
 	
 	
 }
@@ -438,6 +448,9 @@ public class Main {
 		if(STATICS.isAllInHole(n.listBalles) == true) {
 			
 			System.err.println("------- F O U N D ---------");
+			n.clearPattern();
+			n.printPattern();
+			
 		}else {
 			
 			System.err.println(n);
