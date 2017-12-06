@@ -18,7 +18,7 @@ class STATICS{
 		
 		for (int key : initialMap.keySet()) {
 			for (int x = 0 ; x < initialMap.get(key).length ; x++) {
-				if(initialMap.get(key)[x].equals("h")) {
+				if(initialMap.get(key)[x].equals("H")) {
 					int[] trou = {x,key};
 					initialTrous.add(trou);
 				}
@@ -131,7 +131,7 @@ class Node{
 			if(b.x + b.mov < STATICS.maxX) {
 				System.err.println("DIR EAST");
 				if (b.mov == 1) {
-					if(map.get(b.y)[b.x + b.mov].equals("h")) {
+					if(map.get(b.y)[b.x + b.mov].equals("H")) {
 						Possibilite p = new Possibilite();
 						p.x = b.x + b.mov;
 						p.y = b.y;
@@ -155,16 +155,21 @@ class Node{
 					System.err.println("block = "+block);
 					
 					
-					if(map.get(b.y)[b.x + b.mov].equals("h") || map.get(b.y)[b.x + b.mov].equals(".") && block == false) {
-						Possibilite p = new Possibilite();
-						p.x = b.x + b.mov;
-						p.y = b.y;
-						p.mov = b.mov;
-						p.dir = 'E';
-						p.visited = false;
-						p.balleId = b.id;
-						listPoss.add(p);
+					if(block == false) {
+						
+						if(map.get(b.y)[b.x + b.mov].equals("H") || map.get(b.y)[b.x + b.mov].equals(".")) {
+							Possibilite p = new Possibilite();
+							p.x = b.x + b.mov;
+							p.y = b.y;
+							p.mov = b.mov;
+							p.dir = 'E';
+							p.visited = false;
+							p.balleId = b.id;
+							listPoss.add(p);
+						}
 					}
+					
+					
 				}
 				
 			}
@@ -172,7 +177,7 @@ class Node{
 			if(b.x - b.mov >= 0) {
 				System.err.println("TEST ON WEST");
 				if(b.mov == 1) {
-					if(map.get(b.y)[b.x - b.mov].equals("h")) {
+					if(map.get(b.y)[b.x - b.mov].equals("H")) {
 						Possibilite p = new Possibilite();
 						p.x = b.x - b.mov;
 						p.y = b.y;
@@ -195,24 +200,31 @@ class Node{
 					}
 					System.err.println("block = "+block);
 					
-					if(map.get(b.y)[b.x - b.mov].equals("h") || map.get(b.y)[b.x - b.mov].equals(".") && block == false) {
-						Possibilite p = new Possibilite();
-						p.x = b.x - b.mov;
-						p.y = b.y;
-						p.mov = b.mov;
-						p.dir = 'W';
-						p.visited = false;
-						p.balleId = b.id;
-						listPoss.add(p);
+					if(block == false) {
+						
+						if(map.get(b.y)[b.x - b.mov].equals("H") || map.get(b.y)[b.x - b.mov].equals(".")) {
+							Possibilite p = new Possibilite();
+							p.x = b.x - b.mov;
+							p.y = b.y;
+							p.mov = b.mov;
+							p.dir = 'W';
+							p.visited = false;
+							p.balleId = b.id;
+							listPoss.add(p);
+						}
+						
 					}
+					
+					
 				}
 				
 			}
 			
 			//S
 			if(b.y + b.mov < STATICS.maxY) {
+				System.err.println("TEST ON SOUTH");
 				if(b.mov == 1) {
-					if(map.get(b.y + b.mov)[b.x].equals("h")) {
+					if(map.get(b.y + b.mov)[b.x].equals("H")) {
 						Possibilite p = new Possibilite();
 						p.x = b.x;
 						p.y = b.y + b.mov;
@@ -225,28 +237,38 @@ class Node{
 				}
 				else {
 					
-					boolean block = true;
-					for (int i = b.y + 1 ; i < b.y + b.mov ; i++) {
-						block = Pattern.matches("(<|>|v|^|h|[0-9]{1})", pattern.get(i)[b.x]);
+					boolean block = false;
+					for(int i = b.y + 1 ; i < b.y + b.mov ; i++) {
+						System.err.println("TEST ON "+pattern.get(i)[b.x]);
+						if (Pattern.matches("(<|>|v|\\^|h|[0-9]{1})", pattern.get(i)[b.x])) {
+							
+							block = true;
+						}
+					}
+					System.err.println("block = "+block);
+					
+					if(block == false) {
+						if(map.get(b.y + b.mov)[b.x].equals("H") || map.get(b.y + b.mov)[b.x].equals(".")) {
+							Possibilite p = new Possibilite();
+							p.x = b.x;
+							p.y = b.y + b.mov;
+							p.mov = b.mov;
+							p.dir = 'S';
+							p.visited = false;
+							p.balleId = b.id;
+							listPoss.add(p);
+						}
 					}
 					
-					if(map.get(b.y + b.mov)[b.x].equals("h") || map.get(b.y + b.mov)[b.x].equals(".") && block == false) {
-						Possibilite p = new Possibilite();
-						p.x = b.x;
-						p.y = b.y + b.mov;
-						p.mov = b.mov;
-						p.dir = 'S';
-						p.visited = false;
-						p.balleId = b.id;
-						listPoss.add(p);
-					}
+					
 				}
 				
 			}
 			//N
 			if(b.y - b.mov >= 0) {
+				System.err.println("TEST ON NORTH");
 				if(b.mov == 1) {
-					if(map.get(b.y - b.mov)[b.x].equals("h")) {
+					if(map.get(b.y - b.mov)[b.x].equals("H")) {
 						Possibilite p = new Possibilite();
 						p.x = b.x;
 						p.y = b.y - b.mov;
@@ -259,21 +281,26 @@ class Node{
 				}
 				else {
 					
-					boolean block = true;
+					boolean block = false;
 					for (int i = b.y -1 ; i > b.y  ; i--) {
 						block = Pattern.matches("(<|>|v|^|h|[0-9]{1})", pattern.get(i)[b.x]);
 					}
 					
-					if(map.get(b.y - b.mov)[b.x].equals("h") || map.get(b.y - b.mov)[b.x].equals(".") && block == false) {
-						Possibilite p = new Possibilite();
-						p.x = b.x;
-						p.y = b.y - b.mov;
-						p.mov = b.mov;
-						p.dir = 'N';
-						p.visited = false;
-						p.balleId = b.id;
-						listPoss.add(p);
+					if(block == false) {
+						
+						if(map.get(b.y - b.mov)[b.x].equals("H") || map.get(b.y - b.mov)[b.x].equals(".")) {
+							Possibilite p = new Possibilite();
+							p.x = b.x;
+							p.y = b.y - b.mov;
+							p.mov = b.mov;
+							p.dir = 'N';
+							p.visited = false;
+							p.balleId = b.id;
+							listPoss.add(p);
+						}
 					}
+					
+					
 				}
 				
 			}
@@ -354,7 +381,13 @@ class Node{
 			}
 		}
 		
-		map.get(pos.y)[pos.x] = String.valueOf(pos.mov - 1);
+		if(map.get(pos.y)[pos.x].equals("H")) {
+			map.get(pos.y)[pos.x] = "0";
+		}
+		else {
+			map.get(pos.y)[pos.x] = String.valueOf(pos.mov - 1);
+		}
+		
 			
 		
 	}
@@ -460,14 +493,14 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		HashMap<Integer, String[]> initialMap = new HashMap<>();
-		String[] c =  {".","x","x"};
-		String[] c2 = {".","x","x"};
-		String[] c3 = {"h","1","2"};
-		initialMap.put(0, c);
-		initialMap.put(1, c2);
-		initialMap.put(2, c3);
-		STATICS.maxX = 3;
-		STATICS.maxY = 3;
+//		String[] c =  {".","h","x"};
+//		String[] c2 = {"h","1","h"};
+//		String[] c3 = {"2","x","."};
+//		initialMap.put(0, c);
+//		initialMap.put(1, c2);
+//		initialMap.put(2, c3);
+//		STATICS.maxX = 3;
+//		STATICS.maxY = 3;
 		
 //		String[] c =  {"4",".",".","x","x"};
 //		String[] c2 = {".","h",".","h","."};
@@ -479,6 +512,50 @@ public class Main {
 //		initialMap.put(2, c3);
 //		initialMap.put(3, c4);
 //		initialMap.put(4, c5);
+//		STATICS.maxX = 5;
+//		STATICS.maxY = 5;
+		
+
+
+//		3..H.2
+//		.2..H.
+//		..H..H
+//		.X.2.X
+//		......
+//		3..H..
+//		String[] c =  {"3",".",".","h",".","2"};
+//		String[] c2 = {".","2",".",".","h","."};
+//		String[] c3 = {".",".","h",".",".","h"};
+//		String[] c4 = {".","x",".","2",".","x"};
+//		String[] c5 = {".",".",".",".",".","."};
+//		String[] c6 = {"3",".",".","h",".","."};
+//		initialMap.put(0, c);
+//		initialMap.put(1, c2);
+//		initialMap.put(2, c3);
+//		initialMap.put(3, c4);
+//		initialMap.put(4, c5);
+//		initialMap.put(5, c6);
+//		STATICS.maxX = 6;
+//		STATICS.maxY = 6;
+		
+		String[] c  = {".","X","X","X",".","5","X","."};
+		String[] c1 = {"X",".","4",".","X",".",".","X"};
+		String[] c2 = {"X","4",".",".","X","3",".","X"};
+		String[] c3 = {"X",".",".",".","X",".","X","."};
+		String[] c4 = {".","X",".","X",".","H",".","X"};
+		String[] c5 = {"X",".","H","X",".",".",".","X"};
+		String[] c6 = {"X",".",".","X",".","H",".","X"};
+		String[] c7 = {".","X","H",".","X","X","X","."};
+		initialMap.put(0, c);
+		initialMap.put(1, c1);
+		initialMap.put(2, c2);
+		initialMap.put(3, c3);
+		initialMap.put(4, c4);
+		initialMap.put(5, c5);
+		initialMap.put(6, c6);
+		initialMap.put(7, c7);
+		STATICS.maxX = 8;
+		STATICS.maxY = 8;
 		
 		STATICS.setInitialTrous(initialMap);
 		STATICS.printInitialTrous();
