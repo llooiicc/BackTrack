@@ -1,6 +1,7 @@
 package implementation;
 
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import java.io.*;
@@ -25,6 +26,8 @@ class STATICS{
 	static int maxX = 5;
 	static int maxY = 5;
 	
+	static Pattern reg = Pattern.compile("^(<|>|v|\\^|[0-9])$");
+	
 	static ArrayList<int[]> initialTrous = new ArrayList<>();
 	
 	static void setInitialTrous(HashMap<Integer, String[]> initialMap) {
@@ -40,9 +43,9 @@ class STATICS{
 	}
 	
 	static void printInitialTrous() {
-		System.err.println("-----initialTrous-----");
+		////System.err.println("-----initialTrous-----");
 		for (int[] t : initialTrous) {
-			System.err.println(t[0]+" "+t[1]);
+			////System.err.println(t[0]+" "+t[1]);
 		}
 	}
 	
@@ -124,7 +127,9 @@ class Node{
 		for (int key : map.keySet()) {
 			for (int i = 0; i < map.get(key).length; i++) {
 				
-				if(Pattern.matches("[1-9]{1}", map.get(key)[i])) {
+				Pattern reg = Pattern.compile("^[0-9]$");
+				Matcher match = reg.matcher(map.get(key)[i]);
+				if(match.matches()) {
 					//int[] balle = {key, i, value};
 					//balles.add(balle);
 					Balle balle = new Balle();
@@ -147,7 +152,7 @@ class Node{
 			
 			//E
 			if(b.x + b.mov < STATICS.maxX) {
-				System.err.println("DIR EAST");
+				////System.err.println("DIR EAST");
 				if (b.mov == 1) {
 					if(map.get(b.y)[b.x + b.mov].equals("H")) {
 						Possibilite p = new Possibilite();
@@ -163,14 +168,17 @@ class Node{
 				else {
 					
 					boolean block = false;
+					String tst = "";
 					for(int i = b.x + 1 ; i < b.x + b.mov ; i++) {
-						System.err.println("TEST ON "+pattern.get(b.y)[i]);
-						if (Pattern.matches("(<|>|v|\\^|H|[0-9])", pattern.get(b.y)[i])) {
-							
+						////System.err.println("TEST ON "+pattern.get(b.y)[i]);
+						tst += pattern.get(b.y)[i];
+					}	
+						Matcher match = STATICS.reg.matcher(tst);
+						if(match.matches()) {							
 							block = true;
 						}
-					}
-					System.err.println("block = "+block+" b = "+b.x+" "+b.y);
+					
+					////System.err.println("block = "+block+" b = "+b.x+" "+b.y);
 					
 					
 					if(block == false) {
@@ -193,7 +201,7 @@ class Node{
 			}
 			//W
 			if(b.x - b.mov >= 0) {
-				System.err.println("TEST ON WEST");
+				////System.err.println("TEST ON WEST");
 				if(b.mov == 1) {
 					if(map.get(b.y)[b.x - b.mov].equals("H")) {
 						Possibilite p = new Possibilite();
@@ -209,14 +217,19 @@ class Node{
 				else {
 					
 					boolean block = false;
+					String tst = "";
 					for(int i = b.x - 1 ; i > b.x - b.mov  ; i--) {
-						System.err.println("TEST ON "+pattern.get(b.y)[i]);
-						if (Pattern.matches("(<|>|v|\\^|H|[0-9]{1})", pattern.get(b.y)[i])) {
+						tst += pattern.get(b.y)[i];
+					}
+					
+						////System.err.println("TEST ON "+pattern.get(b.y)[i]);
+						Matcher match = STATICS.reg.matcher(tst);
+						if(match.matches()) {
 							
 							block = true;
 						}
-					}
-					System.err.println("block = "+block+" b = "+b.x+" "+b.y);
+					
+					////System.err.println("block = "+block+" b = "+b.x+" "+b.y);
 					
 					if(block == false) {
 						
@@ -240,7 +253,7 @@ class Node{
 			
 			//S
 			if(b.y + b.mov < STATICS.maxY) {
-				System.err.println("TEST ON SOUTH");
+				////System.err.println("TEST ON SOUTH");
 				if(b.mov == 1) {
 					if(map.get(b.y + b.mov)[b.x].equals("H")) {
 						Possibilite p = new Possibilite();
@@ -256,15 +269,19 @@ class Node{
 				else {
 					
 					boolean block = false;
+					String tst = "";
 					for(int i = b.y + 1 ; i < b.y + b.mov ; i++) {
-						System.err.println("TEST ON "+pattern.get(i)[b.x]);
-						if (Pattern.matches("(<|>|v|\\^|H|[0-9]{1})", pattern.get(i)[b.x])) {
-							
+						tst += pattern.get(i)[b.x];
+					}
+					
+						////System.err.println("TEST ON "+pattern.get(i)[b.x]);
+						Matcher match = STATICS.reg.matcher(tst);
+						if(match.matches()) {
+													
 							block = true;
 						}
-					}
-					System.err.println("block = "+block+" b = "+b.x+" "+b.y);
 					
+					//System.err.println("block = "+block+" b = "+b.x+" "+b.y);
 					if(block == false) {
 						if(map.get(b.y + b.mov)[b.x].equals("H") || map.get(b.y + b.mov)[b.x].equals(".")) {
 							Possibilite p = new Possibilite();
@@ -284,7 +301,7 @@ class Node{
 			}
 			//N
 			if(b.y - b.mov >= 0) {
-				System.err.println("TEST ON NORTH");
+				//System.err.println("TEST ON NORTH");
 				if(b.mov == 1) {
 					if(map.get(b.y - b.mov)[b.x].equals("H")) {
 						Possibilite p = new Possibilite();
@@ -300,13 +317,19 @@ class Node{
 				else {
 					
 					boolean block = false;
+					String tst = "";
 					for (int i = b.y -1 ; i > b.y - b.mov  ; i--) {
-						System.err.println("TEST ON "+pattern.get(i)[b.x]);
-						if(Pattern.matches("(<|>|v|\\^|H|[0-9])", pattern.get(i)[b.x])) {
+						tst += pattern.get(i)[b.x];
+					}
+					
+						//System.err.println("TEST ON "+pattern.get(i)[b.x]);
+						Matcher match = STATICS.reg.matcher(tst);
+						if(match.matches()) {
+
 							block = true;
 						}
-					}
-					System.err.println("block = "+block+" b = "+b.x+" "+b.y);
+					
+					//System.err.println("block = "+block+" b = "+b.x+" "+b.y);
 					
 					if(block == false) {
 						
@@ -382,6 +405,7 @@ class Node{
 			map.get(pos.y - pos.mov)[pos.x] = ".";
 			for(int i = pos.y - pos.mov ; i < pos.y ; i++) {
 				pattern.get(i)[pos.x] = "v";
+				map.get(i)[pos.x] = "v";
 			}
 			pattern.get(pos.y)[pos.x] = String.valueOf(pos.mov - 1);
 		}
@@ -389,18 +413,21 @@ class Node{
 			map.get(pos.y + pos.mov)[pos.x] = ".";
 			for(int i = pos.y + pos.mov ; i > pos.y ; i--) {
 				pattern.get(i)[pos.x] = "^";
+				map.get(i)[pos.x] = "^";
 			}
 		}
 		else if(pos.dir == 'E') {
 			map.get(pos.y)[pos.x - pos.mov] = ".";
 			for(int i = pos.x - pos.mov ; i < pos.x ; i++) {
 				pattern.get(pos.y)[i] = ">";
+				map.get(pos.y)[i] = ">";
 			}
 		}
 		else if(pos.dir == 'W') {
 			map.get(pos.y)[pos.x + pos.mov] = ".";
 			for(int i = pos.x + pos.mov ; i > pos.x ; i--) {
 				pattern.get(pos.y)[i] = "<";
+				map.get(pos.y)[i] = "<";
 			}
 		}
 		
@@ -426,9 +453,9 @@ class Node{
 		
 		for (int key : map.keySet()) {
 			for (String c : map.get(key)) {
-				System.err.print(c+" | ");
+				//System.err.print(c+" | ");
 			}
-			System.err.println();
+			//System.err.println();
 		}
 	}
 	
@@ -437,9 +464,9 @@ class Node{
 
 			for (int key : pattern.keySet()) {
 				for (String c : pattern.get(key)) {
-					System.err.print(c+" | ");
+					//System.err.print(c+" | ");
 				}
-				System.err.println();
+				//System.err.println();
 			}
 		
 		
@@ -458,14 +485,14 @@ class Node{
 	
 	public void printBalles() {
 		for (Balle balle : listBalles) {
-			System.err.println(balle);
+			//System.err.println(balle);
 		}
 	}
 	
 	public void printossibilites() {
 		for(int key : mapPos.keySet()) {
 			for (Possibilite pos : mapPos.get(key)) {
-				System.err.println(pos);
+				//System.err.println(pos);
 			}
 		}
 	}
@@ -475,7 +502,9 @@ class Node{
 		for (int key : pattern.keySet()) {
 			for (int i = 0 ; i < STATICS.maxX ; i++) {
 				
-				if(Pattern.matches("(X|H)", pattern.get(key)[i])) {
+				Pattern reg = Pattern.compile("^(X|H|[0-9])$");
+				Matcher match = reg.matcher(pattern.get(key)[i]);
+				if(match.matches()) {
 					pattern.get(key)[i] = ".";
 				}
 			}
@@ -502,18 +531,18 @@ class Finder{
 		
 		if(STATICS.isAllInHole(n.listBalles) == true) {
 			
-			System.err.println("------- F O U N D ---------");
+			//System.err.println("------- F O U N D ---------");
 			n.clearPattern();
 			n.servePatternOnAPlate();
 			
 		}else {
 			
-			System.err.println(n);
+			//System.err.println(n);
 			
 			//possiblilite
 			Possibilite p = n.getPossibilite();
-			System.err.println("_______________________________________________");
-			System.err.println(p+"\n");
+			//System.err.println("_______________________________________________");
+			//System.err.println(p+"\n");
 			
 			Node node = new Node();
 			
@@ -528,20 +557,20 @@ class Finder{
 				//debug map
 				node.printMap();
 				//pattern
-				System.err.println();
+				//System.err.println();
 				node.printPattern();
 				//init node
 				node.initialise();
 				node.printBalles();
 				node.printossibilites();
 				
-					new Scanner(System.in).next();
+					//new Scanner(System.in).next();
 				parcourNodes(node);
 			}
 			else {
-				System.err.println("###### RETOUR ########");
-					new Scanner(System.in).next();
-				System.err.println(node.parent);
+				//System.err.println("###### RETOUR ########");
+					//new Scanner(System.in).next();
+				//System.err.println(node.parent);
 				n.parent.printMap();
 				n.parent.printBalles();
 				n.parent.printossibilites();
@@ -585,7 +614,7 @@ class Solution {
         
         for(int k : initialMap.keySet()) {
         	for(String s : initialMap.get(k)) {
-        		System.err.print(s+" ");
+        		System.err.print(s);
         	}
         	System.err.println();
         }
@@ -602,30 +631,30 @@ class Solution {
 		n.printMap();
 		n.printBalles();
 		n.printossibilites();
-		System.err.println();
+		////System.err.println();
 		
 		Finder.parcourNodes(n);
        
         /*
-        .XXX.5X.
-		X.4.X..X
-		X4..X3.X
-		X...X.X.
-		.X.X.H.X
-		X.HX...X
-		X..X.H.X
-		.XH.XXX.
+.XXX.5X.
+X.4.X..X
+X4..X3.X
+X...X.X.
+.X.X.H.X
+X.HX...X
+X..X.H.X
+.XH.XXX.
 		*/
 		
 		/* test 7
-		4H5..... 
-		......3. 
-		......H. 
-		.....H3. 
-		........ 
-		....HH.. 
-		.43..... 
-		..H3H... 
+4H5.....
+......3.
+......H.
+.....H3.
+........
+....HH..
+.43.....
+..H3H... 
 		*/
  
          
